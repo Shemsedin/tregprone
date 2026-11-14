@@ -1,0 +1,42 @@
+{
+  "title": "Search properties",
+  "placeholder": "City, neighborhood or keyword…",
+  "filters": {
+    "title": "Filters",
+    "clearAll": "Clear all",
+    "applied": "{count, plural, one {# active filter} other {# active filters}}",
+    "type": "Type",
+    "propertyType": "Property type",
+    "price": "Price",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "area": "Area (m²)",
+    "region": "City / Region",
+    "drawArea": "Draw area on map",
+    "clearShape": "Clear drawn area",
+    "anyOption": "Any"
+  },
+  "sort": {
+    "label": "Sort by",
+    "newest": "Newest",
+    "priceAsc": "Price: low to high",
+    "priceDesc": "Price: high to low"
+  },
+  "results": {
+    "count": "{count, plural, one {# property} other {# properties}}",
+    "loading": "Loading properties…",
+    "empty": "No properties match your filters.",
+    "emptyHint": "Try removing some filters or expanding the map area."
+  },
+  "tabs": {
+    "list": "List",
+    "map": "Map",
+    "filters": "Filters"
+  },
+  "savedSearches": {
+    "saveCta": "Save search",
+    "saved": "Search saved"
+  }
+}

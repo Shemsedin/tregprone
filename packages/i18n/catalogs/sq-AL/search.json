@@ -1,0 +1,42 @@
+{
+  "title": "Kërko prona",
+  "placeholder": "Qytet, lagje ose fjalë kyçe…",
+  "filters": {
+    "title": "Filtrat",
+    "clearAll": "Pastro të gjitha",
+    "applied": "{count, plural, one {# filtër aktiv} other {# filtra aktivë}}",
+    "type": "Lloji",
+    "propertyType": "Tipi i pronës",
+    "price": "Çmimi",
+    "priceMin": "Min",
+    "priceMax": "Maks",
+    "bedrooms": "Dhoma gjumi",
+    "bathrooms": "Tualete",
+    "area": "Sipërfaqja (m²)",
+    "region": "Qyteti / Rajoni",
+    "drawArea": "Vizato zonën në hartë",
+    "clearShape": "Hiq zonën e vizatuar",
+    "anyOption": "Çdo"
+  },
+  "sort": {
+    "label": "Rendit sipas",
+    "newest": "Më të rejat",
+    "priceAsc": "Çmimi: nga më i ulëti",
+    "priceDesc": "Çmimi: nga më i larti"
+  },
+  "results": {
+    "count": "{count, plural, one {# pronë} other {# prona}}",
+    "loading": "Duke u ngarkuar prona…",
+    "empty": "Nuk u gjet asnjë pronë me filtrat aktualë.",
+    "emptyHint": "Provo të heqësh disa filtra ose të zgjerosh zonën në hartë."
+  },
+  "tabs": {
+    "list": "Lista",
+    "map": "Harta",
+    "filters": "Filtrat"
+  },
+  "savedSearches": {
+    "saveCta": "Ruaj kërkimin",
+    "saved": "Kërkimi u ruajt"
+  }
+}

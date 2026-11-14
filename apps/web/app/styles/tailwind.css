@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-fg: #0f1a14;
+  --color-muted: #5c6b63;
+  --color-border: #e5e7e2;
+  --color-primary: #494acc;
+  --color-primary-fg: #ffffff;
+  --color-primary-hover: #3d3eb5;
+  --color-accent: #f2a7da;
+  --color-accent-fg: #592048;
+  --color-danger: #b3261e;
+  --color-success: #2e7d5b;
+  --color-warning: #a8741a;
+  --color-info: #1565c0;
+  --color-footerBg: #1b2a3b;
+}
+
+html {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+}
+
+body {
+  font-family:
+    'Poppins',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  /* Secondary button (View listing, etc) */
+  .border-border.text-fg.hover\:bg-border\/30 {
+    border-radius: 6px;
+    border-color: #c6ccf6;
+    background-color: #ffffff;
+    color: #3437a7;
+    box-shadow: 0 1px 2px 0 rgb(73 73 204 / 0.04);
+    transition:
+      box-shadow 0.18s,
+      transform 0.18s,
+      border-color 0.18s,
+      background 0.18s,
+      color 0.18s;
+  }
+
+  .border-border.text-fg.hover\:bg-border\/30:hover {
+    border-color: #aeb8f0;
+    background-color: #eef1ff;
+    color: #2b2e95;
+    box-shadow: 0 4px 16px 0 rgb(73 73 204 / 0.13);
+    transform: translateY(-2px);
+  }
+
+  /* Primary button */
+  .bg-primary.text-primary-fg {
+    border-radius: 6px;
+    box-shadow: 0 1px 2px 0 rgb(73 73 204 / 0.04);
+    transition:
+      box-shadow 0.18s,
+      transform 0.18s,
+      background 0.18s,
+      color 0.18s;
+  }
+  .bg-primary.text-primary-fg:hover {
+    box-shadow: 0 4px 16px 0 rgb(73 73 204 / 0.13);
+    transform: translateY(-2px);
+    background: #3f3fb8;
+    color: #fff;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

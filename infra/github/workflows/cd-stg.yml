@@ -1,0 +1,25 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-staging:
+    name: Deploy → Staging
+    runs-on: ubuntu-24.04
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to staging server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.STG_HOST }}
+          username: ${{ secrets.STG_USER }}
+          key: ${{ secrets.STG_SSH_KEY }}
+          script: |
+            cd /srv/tregprone
+            export IMAGE_TAG=${{ github.sha }}
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            docker compose -f docker-compose.prod.yml exec -T api npx prisma migrate deploy

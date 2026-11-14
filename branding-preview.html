@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Branding Preview — Tregprone</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Design tokens ───────────────────────────────────────── */
+      :root {
+        --bg: #fafaf7;
+        --surface: #ffffff;
+        --fg: #0f1a14;
+        --muted: #5c6b63;
+        --border: #e5e7e2;
+
+        /* Primary — indigo */
+        --primary: #494acc;
+        --primary-fg: #ffffff;
+        --primary-hover: #3d3eb5;
+
+        /* Secondary — light lavender */
+        --sec-bg: #f0eff9;
+        --sec-text: #494acc;
+        --sec-border: #c9c8ea;
+        --sec-hover: #e5e4f5;
+
+        /* Promotional pill — pink/plum */
+        --promo-bg: #f9edf7;
+        --promo-text: #592048;
+        --promo-circle: #f2a7da;
+        --promo-circle-h: #d985c2;
+
+        /* Other */
+        --danger: #b3261e;
+        --accent: #efa5d8;
+
+        --radius: 10px;
+        --shadow: 0 1px 2px rgba(15, 26, 20, 0.04), 0 8px 24px -12px rgba(15, 26, 20, 0.1);
+        --ring: 0 0 0 4px rgba(73, 74, 204, 0.28);
+        --dur: 180ms;
+        --ease: cubic-bezier(0.2, 0, 0, 1);
+        --font: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--fg);
+        padding: 48px 24px 96px;
+      }
+
+      .page {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      /* ── Page header ─────────────────────────────────────────── */
+      .page-header {
+        text-align: center;
+        margin-bottom: 56px;
+      }
+      .page-header .eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+      .page-header p {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 0.9375rem;
+      }
+
+      /* ── Section card ────────────────────────────────────────── */
+      .section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 36px 40px;
+        margin-bottom: 28px;
+        box-shadow: var(--shadow);
+      }
+      .section-title {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      /* ── Layout helpers ──────────────────────────────────────── */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px 28px;
+        align-items: flex-start;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 28px 0;
+      }
+
+      /* ── Label below each button ─────────────────────────────── */
+      .lbl {
+        font-size: 0.72rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .lbl strong {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--fg);
+        margin-bottom: 2px;
+      }
+      .lbl code {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-size: 0.68rem;
+        font-family: 'Menlo', 'Monaco', monospace;
+        color: var(--primary);
+      }
+
+      /* ── Button base ─────────────────────────────────────────── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        white-space: nowrap;
+        cursor: pointer;
+        font-family: var(--font);
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        outline: none;
+        border-radius: var(--radius);
+        transition: all var(--dur) var(--ease);
+      }
+      .btn:focus-visible {
+        box-shadow: var(--ring);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      /* sizes */
+      .btn-sm {
+        height: 32px;
+        padding: 0 12px;
+        font-size: 0.75rem;
+      }
+      .btn-md {
+        height: 40px;
+        padding: 0 16px;
+        font-size: 0.875rem;
+      }
+      .btn-lg {
+        height: 44px;
+        padding: 0 24px;
+        font-size: 1rem;
+      }
+      .btn-icon {
+        height: 40px;
+        width: 40px;
+        padding: 0;
+      }
+
+      /* PRIMARY — #494ACC indigo fill */
+      .btn-primary {
+        background: var(--primary);
+        color: var(--primary-fg);
+      }
+      .btn-primary:hover {
+        background: var(--primary-hover);
+      }
+
+      /* SECONDARY — #F0EFF9 light lavender */
+      .btn-secondary {
+        background: var(--sec-bg);
+        color: var(--sec-text);
+        border: 1px solid var(--sec-border);
+      }
+      .btn-secondary:hover {
+        background: var(--sec-hover);
+      }
+
+      /* GHOST */
+      .btn-ghost {
+        background: transparent;
+        color: var(--fg);
+      }
+      .btn-ghost:hover {
+        background: rgba(73, 74, 204, 0.07);
+      }
+
+      /* DANGER */
+      .btn-danger {
+        background: var(--danger);
+        color: #fff;
+      }
+      .btn-danger:hover {
+        background: #9b1c16;
+      }
+
+      /* PROMOTIONAL text link */
+      .btn-promo-link {
+        background: none;
+        border: none;
+        padding: 0;
+        height: auto;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.875rem;
+        gap: 4px;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 3px;
+        transition:
+          gap var(--dur) var(--ease),
+          text-decoration-color var(--dur);
+      }
+      .btn-promo-link:hover {
+        gap: 10px;
+        text-decoration-color: var(--primary);
+      }
+
+      /* ── Promotional PILL ────────────────────────────────────── */
+      /* bg #F9EDF7 · text #592048 · circle #EFA5D8               */
+      .promo-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 10px 10px 16px;
+        background: var(--promo-bg);
+        border-radius: 16px;
+        text-decoration: none;
+        transition:
+          background var(--dur) var(--ease),
+          gap var(--dur) var(--ease);
+        max-width: 520px;
+      }
+      .promo-pill:hover {
+        background: #f2e0ef;
+        gap: 14px;
+      }
+      .promo-pill:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(239, 165, 216, 0.35);
+      }
+      .promo-pill-text {
+        flex: 1;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--promo-text);
+        line-height: 1.4;
+      }
+      .promo-pill-circle {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--promo-circle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background var(--dur) var(--ease),
+          transform var(--dur) var(--ease);
+      }
+      .promo-pill:hover .promo-pill-circle {
+        background: var(--promo-circle-h);
+        transform: translateX(2px);
+      }
+      .promo-pill-circle svg {
+        width: 16px;
+        height: 16px;
+        stroke: #fff;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ── Disabled state ──────────────────────────────────────── */
+      .btn[disabled],
+      .btn.disabled {
+        opacity: 0.45;
+        pointer-events: none;
+      }
+
+      /* ── Focus demo helper ───────────────────────────────────── */
+      .show-focus {
+        box-shadow: var(--ring) !important;
+      }
+
+      /* ── Dot swatch ──────────────────────────────────────────── */
+      .dot {
+        display: inline-block;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        vertical-align: middle;
+        margin-right: 4px;
+      }
+
+      /* ── Spec table ──────────────────────────────────────────── */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8125rem;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      th {
+        font-size: 0.69rem;
+        font-weight: 600;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      td code {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-size: 0.75rem;
+        font-family: 'Menlo', 'Monaco', monospace;
+        color: var(--primary);
+      }
+
+      /* ── Color palette ───────────────────────────────────────── */
+      .palette {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 14px;
+      }
+      .chip {
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+      .swatch {
+        height: 60px;
+      }
+      .chip-meta {
+        background: var(--surface);
+        padding: 9px 12px;
+      }
+      .chip-meta .token {
+        font-size: 0.74rem;
+        font-weight: 600;
+        color: var(--fg);
+      }
+      .chip-meta .hex {
+        font-size: 0.68rem;
+        color: var(--muted);
+        margin-top: 1px;
+        font-family: 'Menlo', 'Monaco', monospace;
+      }
+
+      svg {
+        display: inline-block;
+        vertical-align: middle;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <p class="eyebrow">Tregprone Design System</p>
+        <h1>Branding Preview</h1>
+        <p>Buttons, promotional CTA, and color tokens</p>
+      </header>
+
+      <!-- ═══════════════════════════════════════════════════════════
+       1. PRIMARY  — #494ACC indigo fill
+  ════════════════════════════════════════════════════════════ -->
+      <div class="section">
+        <p class="section-title">Primary button — #494ACC indigo</p>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-md btn-primary">
+              <svg width="16" height="16" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+              Kërko prona
+            </button>
+            <div class="lbl">
+              <strong>md (default)</strong>
+              <code>variant="primary"</code><br />
+              bg <span class="dot" style="background: #494acc"></span>#494ACC · text white
+            </div>
+          </div>
+
+          <div class="col">
+            <button class="btn btn-sm btn-primary">Kërko prona</button>
+            <div class="lbl"><strong>sm</strong> h-32 · px-12</div>
+          </div>
+
+          <div class="col">
+            <button class="btn btn-lg btn-primary">
+              Shto pronën
+              <svg width="16" height="16" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </button>
+            <div class="lbl"><strong>lg</strong> h-44 · px-24</div>
+          </div>
+
+          <div class="col">
+            <button class="btn btn-md btn-icon btn-primary">
+              <svg width="18" height="18" stroke-width="1.5" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </button>
+            <div class="lbl"><strong>icon</strong></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <p class="section-title" style="margin-top: 0; margin-bottom: 18px">States</p>
+        <div class="row" style="align-items: center">
+          <div class="col">
+            <button class="btn btn-md btn-primary">Default</button>
+            <div class="lbl"><strong>Default</strong></div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-primary" style="background: #3d3eb5">Hover</button>
+            <div class="lbl"><strong>Hover</strong> #3D3EB5</div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-primary show-focus">Focus</button>
+            <div class="lbl"><strong>Focus</strong> ring 4px · 28% alpha</div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-primary" style="transform: scale(0.98)">Active</button>
+            <div class="lbl"><strong>Active</strong> scale .98</div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-primary disabled" disabled>Disabled</button>
+            <div class="lbl"><strong>Disabled</strong> 45%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+       2. SECONDARY  — #F0EFF9 light lavender
+  ════════════════════════════════════════════════════════════ -->
+      <div class="section">
+        <p class="section-title">Secondary button — #F0EFF9 bg · #C9C8EA border · #494ACC text</p>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-md btn-secondary">
+              Shiko listimin
+              <svg width="16" height="16" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+            <div class="lbl">
+              <strong>md</strong>
+              <code>variant="secondary"</code><br />
+              bg <span class="dot" style="background: #f0eff9; border-color: #c9c8ea"></span>#F0EFF9
+              · border
+              <span class="dot" style="background: #c9c8ea; border-color: #b8b7df"></span>#C9C8EA ·
+              text <span class="dot" style="background: #494acc"></span>#494ACC
+            </div>
+          </div>
+
+          <div class="col">
+            <button class="btn btn-sm btn-secondary">Shiko listimin</button>
+            <div class="lbl"><strong>sm</strong></div>
+          </div>
+
+          <div class="col">
+            <button class="btn btn-lg btn-secondary">Shiko listimin</button>
+            <div class="lbl"><strong>lg</strong></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <p class="section-title" style="margin-top: 0; margin-bottom: 18px">
+          Primary + secondary pairing
+        </p>
+        <div class="row">
+          <button class="btn btn-md btn-primary">Kontakto agjentin</button>
+          <button class="btn btn-md btn-secondary">Shiko listimin</button>
+        </div>
+
+        <div class="divider"></div>
+        <div class="row" style="align-items: center">
+          <div class="col">
+            <button class="btn btn-md btn-secondary">Default</button>
+            <div class="lbl"><strong>Default</strong></div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-secondary" style="background: #e5e4f5">Hover</button>
+            <div class="lbl"><strong>Hover</strong> #E5E4F5</div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-secondary show-focus">Focus</button>
+            <div class="lbl"><strong>Focus</strong></div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-secondary disabled" disabled>Disabled</button>
+            <div class="lbl"><strong>Disabled</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+       3. PROMOTIONAL PILL  — #F9EDF7 · #592048 · #EFA5D8
+  ════════════════════════════════════════════════════════════ -->
+      <div class="section">
+        <p class="section-title">Promotional pill — #F9EDF7 bg · #592048 text · #EFA5D8 circle</p>
+        <div class="row" style="flex-direction: column; gap: 20px">
+          <div class="col">
+            <a href="#" class="promo-pill">
+              <span class="promo-pill-text">Merr sigurim falas me hipotekë parimisht</span>
+              <span class="promo-pill-circle">
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </span>
+            </a>
+            <div class="lbl">
+              <strong>Promotional pill / default</strong>
+              bg <span class="dot" style="background: #f9edf7; border-color: #e8c5e2"></span>#F9EDF7
+              · text <span class="dot" style="background: #592048"></span>#592048 · circle
+              <span class="dot" style="background: #f2a7da"></span>#F2A7DA
+            </div>
+          </div>
+
+          <div class="col">
+            <a href="#" class="promo-pill" style="padding: 7px 7px 7px 12px; max-width: 400px">
+              <span class="promo-pill-text" style="font-size: 0.8rem"
+                >Shiko të gjitha pronat në Tiranë</span
+              >
+              <span class="promo-pill-circle" style="width: 28px; height: 28px">
+                <svg viewBox="0 0 24 24" style="width: 13px; height: 13px">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </a>
+            <div class="lbl"><strong>sm</strong> — "see all" section header links</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <p class="section-title" style="margin-top: 0; margin-bottom: 14px">Anatomy</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Part</th>
+              <th>Value</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pill background</td>
+              <td>
+                <span class="dot" style="background: #f9edf7; border-color: #e8c5e2"></span>#F9EDF7
+              </td>
+              <td>Light pink tint</td>
+            </tr>
+            <tr>
+              <td>Text color</td>
+              <td><span class="dot" style="background: #592048"></span>#592048</td>
+              <td>Dark plum</td>
+            </tr>
+            <tr>
+              <td>Circle background</td>
+              <td><span class="dot" style="background: #f2a7da"></span>#F2A7DA</td>
+              <td>Medium pink</td>
+            </tr>
+            <tr>
+              <td>Circle hover</td>
+              <td><span class="dot" style="background: #d985c2"></span>#D985C2</td>
+              <td>Darker pink on hover</td>
+            </tr>
+            <tr>
+              <td>Arrow icon</td>
+              <td><span class="dot" style="background: #fff; border-color: #ccc"></span>#FFFFFF</td>
+              <td>White stroke on circle</td>
+            </tr>
+            <tr>
+              <td>Border radius</td>
+              <td>16px</td>
+              <td>rounded-2xl</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+       4. PROMOTIONAL TEXT LINK  (variant="promotional")
+  ════════════════════════════════════════════════════════════ -->
+      <div class="section">
+        <p class="section-title">Promotional text link — variant="promotional"</p>
+        <div class="row">
+          <div class="col">
+            <a href="#" class="btn btn-promo-link">
+              Shiko të gjitha
+              <svg width="16" height="16" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <div class="lbl">
+              <strong>Text link with animated arrow</strong>
+              <code>variant="promotional"</code><br />
+              color <span class="dot" style="background: #494acc"></span>#494ACC · underline on
+              hover
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+       5. OTHER VARIANTS
+  ════════════════════════════════════════════════════════════ -->
+      <div class="section">
+        <p class="section-title">Other variants</p>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-md btn-ghost">Ghost</button>
+            <div class="lbl">
+              <strong>Ghost</strong> <code>variant="ghost"</code><br />Tertiary / toolbar
+            </div>
+          </div>
+          <div class="col">
+            <button class="btn btn-md btn-danger">
+              <svg width="16" height="16" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+              </svg>
+              Fshi pronën
+            </button>
+            <div class="lbl">
+              <strong>Danger</strong> <code>variant="danger"</code><br />Destructive actions only
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+       6. SPEC TABLE
+  ════════════════════════════════════════════════════════════ -->
+      <div class="section">
+        <p class="section-title">Variant spec</p>
+        <table>
+          <thead>
+            <tr>
+              <th>variant=</th>
+              <th>Background</th>
+              <th>Text</th>
+              <th>Border</th>
+              <th>Use when</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>primary</code></td>
+              <td><span class="dot" style="background: #494acc"></span>#494ACC</td>
+              <td><span class="dot" style="background: #fff; border-color: #ccc"></span>#FFFFFF</td>
+              <td>—</td>
+              <td>Main CTA — contact, search, submit</td>
+            </tr>
+            <tr>
+              <td><code>secondary</code></td>
+              <td>
+                <span class="dot" style="background: #f0eff9; border-color: #c9c8ea"></span>#F0EFF9
+              </td>
+              <td><span class="dot" style="background: #494acc"></span>#494ACC</td>
+              <td>
+                <span class="dot" style="background: #c9c8ea; border-color: #b8b7df"></span>#C9C8EA
+              </td>
+              <td>Supporting action — "View listing", cancel</td>
+            </tr>
+            <tr>
+              <td><code>ghost</code></td>
+              <td>Transparent</td>
+              <td><span class="dot" style="background: #0f1a14"></span>#0F1A14</td>
+              <td>—</td>
+              <td>Tertiary / toolbar / icon buttons</td>
+            </tr>
+            <tr>
+              <td><code>danger</code></td>
+              <td><span class="dot" style="background: #b3261e"></span>#B3261E</td>
+              <td><span class="dot" style="background: #fff; border-color: #ccc"></span>#FFFFFF</td>
+              <td>—</td>
+              <td>Destructive actions only</td>
+            </tr>
+            <tr>
+              <td>Promotional pill</td>
+              <td>
+                <span class="dot" style="background: #f9edf7; border-color: #e8c5e2"></span>#F9EDF7
+              </td>
+              <td><span class="dot" style="background: #592048"></span>#592048</td>
+              <td>—</td>
+              <td>Section CTAs, banners, upsell</td>
+            </tr>
+            <tr>
+              <td><code>promotional</code></td>
+              <td>—</td>
+              <td><span class="dot" style="background: #494acc"></span>#494ACC</td>
+              <td>—</td>
+              <td>"See all →" text links in headers</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+       7. COLOR TOKENS
+  ════════════════════════════════════════════════════════════ -->
+      <div class="section">
+        <p class="section-title">Brand color tokens</p>
+        <div class="palette">
+          <div class="chip">
+            <div class="swatch" style="background: #494acc"></div>
+            <div class="chip-meta">
+              <div class="token">primary</div>
+              <div class="hex">#494ACC</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #3d3eb5"></div>
+            <div class="chip-meta">
+              <div class="token">primary-hover</div>
+              <div class="hex">#3D3EB5</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #f0eff9; border-bottom: 1px solid #c9c8ea"></div>
+            <div class="chip-meta">
+              <div class="token">secondary-bg</div>
+              <div class="hex">#F0EFF9</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #c9c8ea; border-bottom: 1px solid #b8b7df"></div>
+            <div class="chip-meta">
+              <div class="token">secondary-border</div>
+              <div class="hex">#C9C8EA</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #f9edf7; border-bottom: 1px solid #e8c5e2"></div>
+            <div class="chip-meta">
+              <div class="token">promo-bg</div>
+              <div class="hex">#F9EDF7</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #592048"></div>
+            <div class="chip-meta">
+              <div class="token">promo-text</div>
+              <div class="hex">#592048</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #f2a7da"></div>
+            <div class="chip-meta">
+              <div class="token">promo-circle (accent)</div>
+              <div class="hex">#F2A7DA</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #b3261e"></div>
+            <div class="chip-meta">
+              <div class="token">danger</div>
+              <div class="hex">#B3261E</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #0f1a14"></div>
+            <div class="chip-meta">
+              <div class="token">fg</div>
+              <div class="hex">#0F1A14</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #5c6b63"></div>
+            <div class="chip-meta">
+              <div class="token">muted</div>
+              <div class="hex">#5C6B63</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #e5e7e2; border-bottom: 1px solid #d4d6d1"></div>
+            <div class="chip-meta">
+              <div class="token">border</div>
+              <div class="hex">#E5E7E2</div>
+            </div>
+          </div>
+          <div class="chip">
+            <div class="swatch" style="background: #fafaf7; border-bottom: 1px solid #e5e7e2"></div>
+            <div class="chip-meta">
+              <div class="token">bg</div>
+              <div class="hex">#FAFAF7</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

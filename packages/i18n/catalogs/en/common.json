@@ -1,0 +1,71 @@
+{
+  "brand": {
+    "name": "tregprone",
+    "tagline": "Find your home across Albanian-speaking lands"
+  },
+  "nav": {
+    "buy": "Buy",
+    "rent": "Rent",
+    "newListing": "Add property",
+    "favorites": "Favorites",
+    "account": "My account",
+    "login": "Log in",
+    "register": "Sign up",
+    "logout": "Log out",
+    "language": "Language",
+    "currency": "Currency"
+  },
+  "actions": {
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "remove": "Remove",
+    "publish": "Publish",
+    "preview": "Preview",
+    "close": "Close",
+    "more": "More",
+    "less": "Less",
+    "loading": "Loading…",
+    "tryAgain": "Try again",
+    "share": "Share",
+    "copyLink": "Copy link",
+    "viewAll": "View all",
+    "showOnMap": "Show on map",
+    "viewList": "View list"
+  },
+  "footer": {
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "forAgents": "For agents",
+    "help": "Help",
+    "rights": "All rights reserved"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFound": "Page not found",
+    "unauthorized": "Please log in to continue",
+    "forbidden": "You don't have permission for this action",
+    "tooManyRequests": "Too many requests. Try again later.",
+    "requestId": "Request ID"
+  },
+  "time": {
+    "justNow": "just now",
+    "minutesAgo": "{count, plural, one {# minute ago} other {# minutes ago}}",
+    "hoursAgo": "{count, plural, one {# hour ago} other {# hours ago}}",
+    "daysAgo": "{count, plural, one {# day ago} other {# days ago}}"
+  },
+  "locales": {
+    "sq-AL": "Albanian (Albania)",
+    "sq-XK": "Albanian (Kosovo)",
+    "sq-MK": "Albanian (North Macedonia)",
+    "en": "English"
+  }
+}

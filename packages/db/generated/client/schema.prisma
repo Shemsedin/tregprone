@@ -1,0 +1,257 @@
+// Prisma schema for Tregprone
+// packages/db/prisma/schema.prisma
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../generated/client"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+// ── Enums ────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  USER
+  AGENT
+  ADMIN
+}
+
+enum ListingType {
+  SALE
+  RENT
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  VILLA
+  STUDIO
+  LAND
+  COMMERCIAL
+  OFFICE
+  GARAGE
+  OTHER
+}
+
+enum ListingStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+  SOLD
+  RENTED
+  ARCHIVED
+}
+
+enum RentPeriod {
+  MONTH
+  WEEK
+  DAY
+}
+
+// ── Models ───────────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  passwordHash  String?
+  name          String
+  phone         String?
+  role          UserRole  @default(USER)
+  locale        String    @default("sq-AL")
+  avatarUrl     String?
+  suspended     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  listings      Listing[]        @relation("ListingOwner")
+  favorites     Favorite[]
+  contacts      ContactRequest[] @relation("Sender")
+  oauthAccounts OAuthAccount[]
+  sessions      Session[]
+
+  @@index([email])
+}
+
+model OAuthAccount {
+  id           String    @id @default(cuid())
+  userId       String
+  provider     String
+  providerUid  String
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerUid])
+  @@index([userId])
+}
+
+model Session {
+  id          String    @id @default(cuid())
+  userId      String
+  refreshHash String
+  userAgent   String?
+  ipHash      String?
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime
+  revokedAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([refreshHash])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([tokenHash])
+}
+
+model Region {
+  id          String  @id @default(cuid())
+  country     String
+  name        String
+  slug        String  @unique
+  parentId    String?
+  centroidLat Float?
+  centroidLng Float?
+
+  parent   Region?   @relation("RegionTree", fields: [parentId], references: [id])
+  children Region[]  @relation("RegionTree")
+  listings Listing[]
+
+  @@index([country])
+  @@index([slug])
+}
+
+model Listing {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  ownerId      String
+  status       ListingStatus @default(DRAFT)
+  listingType  ListingType
+  propertyType PropertyType
+  title        String
+  description  String        @db.Text
+  priceMinor   BigInt
+  currency     String
+  rentPeriod   RentPeriod?
+  areaM2       Int?
+  bedrooms     Int?
+  bathrooms    Int?
+  floor        Int?
+  floorsTotal  Int?
+  yearBuilt    Int?
+
+  regionId    String
+  addressLine String?
+  lat         Float
+  lng         Float
+
+  publishedAt DateTime?
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  owner     User             @relation("ListingOwner", fields: [ownerId], references: [id])
+  region    Region           @relation(fields: [regionId], references: [id])
+  images    ListingImage[]
+  features  ListingFeature[]
+  contacts  ContactRequest[]
+  favorites Favorite[]
+
+  @@index([status, listingType, propertyType])
+  @@index([regionId])
+  @@index([priceMinor])
+  @@index([ownerId])
+  @@index([slug])
+}
+
+model ListingImage {
+  id        String  @id @default(cuid())
+  listingId String
+  url       String
+  width     Int
+  height    Int
+  blurhash  String?
+  position  Int     @default(0)
+  alt       String?
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId, position])
+}
+
+model Feature {
+  id  String @id @default(cuid())
+  key String @unique
+
+  listings ListingFeature[]
+}
+
+model ListingFeature {
+  listingId String
+  featureId String
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@id([listingId, featureId])
+}
+
+model Favorite {
+  userId    String
+  listingId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([userId, listingId])
+}
+
+model ContactRequest {
+  id          String   @id @default(cuid())
+  listingId   String
+  senderId    String?
+  senderName  String
+  senderEmail String
+  senderPhone String?
+  message     String   @db.Text
+  ipHash      String?
+  createdAt   DateTime @default(now())
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  sender  User?   @relation("Sender", fields: [senderId], references: [id], onDelete: SetNull)
+
+  @@index([listingId])
+  @@index([senderId])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String?
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}

@@ -1,0 +1,28 @@
+{
+  "validation": {
+    "required": "Kjo fushë është e detyrueshme",
+    "email": "Email i pavlefshëm",
+    "min": "Të paktën {min} karaktere",
+    "max": "Maksimum {max} karaktere",
+    "minNumber": "Vlera minimum është {min}",
+    "maxNumber": "Vlera maksimum është {max}",
+    "url": "URL e pavlefshme",
+    "phone": "Numër telefoni i pavlefshëm",
+    "passwordsDoNotMatch": "Fjalëkalimet nuk përputhen"
+  },
+  "http": {
+    "400": "Kërkesë e pavlefshme",
+    "401": "Duhet të hysh për të vazhduar",
+    "403": "Nuk keni leje për këtë veprim",
+    "404": "Burimi nuk u gjet",
+    "409": "Konflikt me një burim ekzistues",
+    "429": "Shumë kërkesa. Provo më vonë.",
+    "500": "Gabim në server. Po e shqyrtojmë."
+  },
+  "page": {
+    "title": "Diçka shkoi keq",
+    "subtitle": "Po e shqyrtojmë problemin. Provo të rifreskosh faqen.",
+    "requestId": "ID e kërkesës: {id}",
+    "goHome": "Kthehu në kryefaqe"
+  }
+}

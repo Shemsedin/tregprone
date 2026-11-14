@@ -1,0 +1,46 @@
+{
+  "tabs": {
+    "profile": "Profili",
+    "listings": "Pronat e mia",
+    "favorites": "Të preferuarat",
+    "security": "Siguria",
+    "notifications": "Njoftimet"
+  },
+  "profile": {
+    "title": "Profili im",
+    "name": "Emri",
+    "email": "Email",
+    "phone": "Telefoni",
+    "language": "Gjuha",
+    "save": "Ruaj ndryshimet",
+    "saved": "Ndryshimet u ruajtën"
+  },
+  "listings": {
+    "title": "Pronat e mia",
+    "newCta": "Shto pronë të re",
+    "filters": {
+      "all": "Të gjitha",
+      "draft": "Draft",
+      "pending": "Në pritje",
+      "published": "Të publikuara",
+      "rejected": "Të refuzuara",
+      "soldRented": "Të mbyllura"
+    },
+    "empty": "Ende nuk ke shtuar asnjë pronë.",
+    "emptyCta": "Shto pronën tënde të parë"
+  },
+  "favorites": {
+    "title": "Të preferuarat",
+    "empty": "Ende nuk ke ruajtur asnjë pronë.",
+    "emptyCta": "Eksploro prona"
+  },
+  "security": {
+    "title": "Siguria",
+    "changePassword": "Ndrysho fjalëkalimin",
+    "currentPassword": "Fjalëkalimi aktual",
+    "newPassword": "Fjalëkalimi i ri",
+    "sessions": "Sesionet aktive",
+    "revoke": "Përfundo sesionin",
+    "revokeAll": "Dil nga të gjitha pajisjet"
+  }
+}

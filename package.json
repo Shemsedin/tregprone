@@ -1,0 +1,57 @@
+{
+  "name": "tregprone",
+  "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=20.11 <21",
+    "npm": ">=10"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint:fix --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e --workspace=@treg/web",
+    "test:contract": "npm run test --workspace=@treg/types",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:migrate": "npm run migrate:dev --workspace=@treg/db",
+    "db:deploy": "npm run migrate:deploy --workspace=@treg/db",
+    "db:seed": "npm run seed --workspace=@treg/db",
+    "db:reset": "npm run reset --workspace=@treg/db",
+    "db:studio": "npm run studio --workspace=@treg/db",
+    "i18n:lint": "npm run lint --workspace=@treg/i18n",
+    "i18n:extract": "npm run extract --workspace=@treg/i18n",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "typescript": "^5.6.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{md,json,yml,yaml,css}": [
+      "prettier --write"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}

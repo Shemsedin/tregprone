@@ -1,0 +1,28 @@
+{
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email",
+    "min": "At least {min} characters",
+    "max": "At most {max} characters",
+    "minNumber": "Minimum value is {min}",
+    "maxNumber": "Maximum value is {max}",
+    "url": "Invalid URL",
+    "phone": "Invalid phone number",
+    "passwordsDoNotMatch": "Passwords do not match"
+  },
+  "http": {
+    "400": "Invalid request",
+    "401": "You need to log in to continue",
+    "403": "You don't have permission for this action",
+    "404": "Resource not found",
+    "409": "Conflict with an existing resource",
+    "429": "Too many requests. Try again later.",
+    "500": "Server error. We're looking into it."
+  },
+  "page": {
+    "title": "Something went wrong",
+    "subtitle": "We're looking into it. Try refreshing the page.",
+    "requestId": "Request ID: {id}",
+    "goHome": "Back to home"
+  }
+}

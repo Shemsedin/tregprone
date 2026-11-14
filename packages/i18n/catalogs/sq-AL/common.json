@@ -1,0 +1,71 @@
+{
+  "brand": {
+    "name": "tregprone",
+    "tagline": "Gjej shtëpinë tënde në trojet shqiptare"
+  },
+  "nav": {
+    "buy": "Blej",
+    "rent": "Me qira",
+    "newListing": "Shto pronë",
+    "favorites": "Të preferuarat",
+    "account": "Llogaria ime",
+    "login": "Hyr",
+    "register": "Regjistrohu",
+    "logout": "Dil",
+    "language": "Gjuha",
+    "currency": "Monedha"
+  },
+  "actions": {
+    "search": "Kërko",
+    "save": "Ruaj",
+    "cancel": "Anulo",
+    "back": "Kthehu",
+    "next": "Vazhdo",
+    "submit": "Dërgo",
+    "edit": "Modifiko",
+    "delete": "Fshi",
+    "remove": "Hiq",
+    "publish": "Publiko",
+    "preview": "Parashiko",
+    "close": "Mbyll",
+    "more": "Më shumë",
+    "less": "Më pak",
+    "loading": "Duke u ngarkuar…",
+    "tryAgain": "Provo përsëri",
+    "share": "Ndaj",
+    "copyLink": "Kopjo lidhjen",
+    "viewAll": "Shiko të gjitha",
+    "showOnMap": "Shfaq në hartë",
+    "viewList": "Shiko listën"
+  },
+  "footer": {
+    "about": "Rreth nesh",
+    "contact": "Na kontaktoni",
+    "privacy": "Privatësia",
+    "terms": "Kushtet e përdorimit",
+    "cookies": "Cookie-t",
+    "forAgents": "Për agjentët",
+    "help": "Ndihma",
+    "rights": "Të gjitha të drejtat e rezervuara"
+  },
+  "errors": {
+    "generic": "Diçka shkoi keq. Ju lutemi provoni përsëri.",
+    "notFound": "Faqja nuk u gjet",
+    "unauthorized": "Ju lutemi hyni për të vazhduar",
+    "forbidden": "Nuk keni leje për këtë veprim",
+    "tooManyRequests": "Shumë kërkesa. Provo më vonë.",
+    "requestId": "ID e kërkesës"
+  },
+  "time": {
+    "justNow": "tani",
+    "minutesAgo": "{count, plural, one {# minutë më parë} other {# minuta më parë}}",
+    "hoursAgo": "{count, plural, one {# orë më parë} other {# orë më parë}}",
+    "daysAgo": "{count, plural, one {# ditë më parë} other {# ditë më parë}}"
+  },
+  "locales": {
+    "sq-AL": "Shqip (Shqipëri)",
+    "sq-XK": "Shqip (Kosovë)",
+    "sq-MK": "Shqip (Maqedoni e Veriut)",
+    "en": "English"
+  }
+}

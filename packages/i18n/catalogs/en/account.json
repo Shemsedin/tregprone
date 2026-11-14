@@ -1,0 +1,46 @@
+{
+  "tabs": {
+    "profile": "Profile",
+    "listings": "My listings",
+    "favorites": "Favorites",
+    "security": "Security",
+    "notifications": "Notifications"
+  },
+  "profile": {
+    "title": "My profile",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "language": "Language",
+    "save": "Save changes",
+    "saved": "Changes saved"
+  },
+  "listings": {
+    "title": "My listings",
+    "newCta": "Add new property",
+    "filters": {
+      "all": "All",
+      "draft": "Draft",
+      "pending": "Pending",
+      "published": "Published",
+      "rejected": "Rejected",
+      "soldRented": "Closed"
+    },
+    "empty": "You haven't added any properties yet.",
+    "emptyCta": "Add your first property"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "empty": "You haven't saved any property yet.",
+    "emptyCta": "Explore properties"
+  },
+  "security": {
+    "title": "Security",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "sessions": "Active sessions",
+    "revoke": "End session",
+    "revokeAll": "Sign out of all devices"
+  }
+}

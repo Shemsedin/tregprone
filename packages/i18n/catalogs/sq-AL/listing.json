@@ -1,0 +1,111 @@
+{
+  "type": {
+    "SALE": "Në shitje",
+    "RENT": "Me qira"
+  },
+  "propertyType": {
+    "APARTMENT": "Apartament",
+    "HOUSE": "Shtëpi",
+    "VILLA": "Vilë",
+    "STUDIO": "Studio",
+    "LAND": "Tokë",
+    "COMMERCIAL": "Lokal komercial",
+    "OFFICE": "Zyrë",
+    "GARAGE": "Garazh",
+    "OTHER": "Tjetër"
+  },
+  "status": {
+    "DRAFT": "Draft",
+    "PENDING_REVIEW": "Në pritje",
+    "PUBLISHED": "I publikuar",
+    "REJECTED": "I refuzuar",
+    "SOLD": "I shitur",
+    "RENTED": "I dhënë me qira",
+    "ARCHIVED": "I arkivuar"
+  },
+  "rentPeriod": {
+    "MONTH": "/muaj",
+    "WEEK": "/javë",
+    "DAY": "/ditë"
+  },
+  "summary": {
+    "bedrooms": "{count, plural, one {# dhomë gjumi} other {# dhoma gjumi}}",
+    "bathrooms": "{count, plural, one {# tualet} other {# tualete}}",
+    "area": "{m2} m²",
+    "floor": "Kati {floor} nga {total}"
+  },
+  "detail": {
+    "overview": "Përmbledhje",
+    "description": "Përshkrimi",
+    "features": "Veçoritë",
+    "location": "Vendndodhja",
+    "owner": "Postuar nga",
+    "publishedOn": "Publikuar më {date}",
+    "shareCta": "Ndaj këtë pronë",
+    "saveCta": "Ruaj në të preferuarat",
+    "savedCta": "U ruajt",
+    "contactCta": "Kontakto pronarin",
+    "showPhone": "Shfaq numrin",
+    "askForPhone": "Numri zbulohet pas dërgimit të mesazhit"
+  },
+  "contact": {
+    "title": "Dërgo një mesazh",
+    "subtitle": "Pronari merr email-in tënd. Mos ndaj të dhëna të ndjeshme.",
+    "name": "Emri",
+    "email": "Email-i yt",
+    "phone": "Telefoni (opsional)",
+    "message": "Mesazhi",
+    "messagePlaceholder": "Përshëndetje, jam i interesuar për këtë pronë…",
+    "submit": "Dërgo mesazhin",
+    "success": "Mesazhi u dërgua. Pronari do të të kontaktojë.",
+    "rateLimited": "Ke dërguar shumë mesazhe. Provo më vonë."
+  },
+  "features": {
+    "balcony": "Ballkon",
+    "parking": "Parkim",
+    "elevator": "Ashensor",
+    "garden": "Kopsht",
+    "basement": "Bodrum",
+    "furnished": "I mobiluar",
+    "airConditioning": "Klimë",
+    "centralHeating": "Ngrohje qendrore",
+    "internet": "Internet",
+    "seaView": "Pamje deti",
+    "mountainView": "Pamje mali",
+    "newConstruction": "Ndërtim i ri",
+    "petsAllowed": "Lejohen kafshët",
+    "security": "Sigurim",
+    "swimmingPool": "Pishinë"
+  },
+  "wizard": {
+    "step1": "Bazat",
+    "step2": "Vendndodhja",
+    "step3": "Foto",
+    "step4": "Rishikimi",
+    "title": "Titulli",
+    "titlePlaceholder": "p.sh. Apartament 2+1 në plazhin e Durrësit",
+    "description": "Përshkrimi",
+    "descriptionHint": "Përshkruaj pronën, lagjen dhe çfarë e bën të veçantë.",
+    "price": "Çmimi",
+    "currency": "Monedha",
+    "rentPeriod": "Periudha e qirasë",
+    "areaM2": "Sipërfaqja (m²)",
+    "bedrooms": "Dhoma gjumi",
+    "bathrooms": "Tualete",
+    "floor": "Kati",
+    "floorsTotal": "Numri i kateve gjithsej",
+    "yearBuilt": "Viti i ndërtimit",
+    "region": "Qyteti / Lagjja",
+    "address": "Adresa",
+    "pinOnMap": "Vendos pikën në hartë",
+    "uploadPhotos": "Ngarko fotot",
+    "photosHint": "Të paktën 3 foto, maksimumi 30. Foto e parë do të jetë kopertina.",
+    "reviewTitle": "Rishikoni dhe publikoni",
+    "submitForReview": "Dërgo për shqyrtim",
+    "saveDraft": "Ruaj draftin"
+  },
+  "card": {
+    "newBadge": "I ri",
+    "featuredBadge": "I veçuar"
+  }
+}

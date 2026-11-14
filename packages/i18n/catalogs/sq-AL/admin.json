@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "Paneli",
+    "listings": "Pronat",
+    "users": "Përdoruesit",
+    "regions": "Rajonet",
+    "features": "Veçoritë",
+    "audit": "Regjistri i auditimit",
+    "settings": "Cilësimet"
+  },
+  "dashboard": {
+    "title": "Paneli i administrimit",
+    "totalUsers": "Përdorues gjithsej",
+    "totalAgents": "Agjentë",
+    "publishedListings": "Prona të publikuara",
+    "pendingQueue": "Në pritje për shqyrtim",
+    "contacts24h": "Kontakte në 24 orë",
+    "reviewNow": "Shqyrto tani"
+  },
+  "listings": {
+    "title": "Moderimi i pronave",
+    "filters": {
+      "status": "Statusi",
+      "region": "Rajoni",
+      "type": "Lloji",
+      "search": "Kërko sipas titullit ose pronarit"
+    },
+    "columns": {
+      "image": "Foto",
+      "title": "Titulli",
+      "owner": "Pronari",
+      "region": "Rajoni",
+      "type": "Lloji",
+      "submittedAt": "Dorëzuar",
+      "status": "Statusi"
+    },
+    "actions": {
+      "approve": "Aprovo",
+      "reject": "Refuzo",
+      "archive": "Arkivo",
+      "open": "Hap"
+    },
+    "rejectDialog": {
+      "title": "Refuzo pronën",
+      "reasonLabel": "Arsyeja",
+      "reasons": {
+        "spam": "Spam",
+        "fake": "Listim i rremë",
+        "bad-photos": "Foto me cilësi të dobët",
+        "wrong-region": "Rajon i gabuar",
+        "duplicate": "Dublikatë",
+        "pricing-suspect": "Çmim i dyshimtë",
+        "other": "Tjetër"
+      },
+      "noteLabel": "Shënim për pronarin (opsional)",
+      "submit": "Refuzo dhe dërgo email"
+    }
+  },
+  "users": {
+    "title": "Përdoruesit",
+    "actions": {
+      "suspend": "Pezullo",
+      "unsuspend": "Riaktivizo",
+      "promoteAgent": "Bëje agjent",
+      "demote": "Riktheje në përdorues"
+    }
+  },
+  "regions": {
+    "title": "Rajonet",
+    "addCity": "Shto qytet",
+    "addNeighborhood": "Shto lagje"
+  },
+  "audit": {
+    "title": "Regjistri i auditimit",
+    "actor": "Aktori",
+    "action": "Veprimi",
+    "target": "Objektivi",
+    "createdAt": "Data"
+  }
+}

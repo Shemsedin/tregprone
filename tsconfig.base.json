@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "useDefineForClassFields": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@treg/web/*": ["apps/web/app/*"],
+      "@treg/api/*": ["apps/api/src/*"],
+      "@treg/worker/*": ["apps/worker/src/*"],
+      "@treg/db": ["packages/db/src/index.ts"],
+      "@treg/db/*": ["packages/db/src/*"],
+      "@treg/types": ["packages/types/src/index.ts"],
+      "@treg/types/*": ["packages/types/src/*"],
+      "@treg/ui": ["packages/ui/src/index.ts"],
+      "@treg/ui/*": ["packages/ui/src/*"],
+      "@treg/i18n": ["packages/i18n/src/index.ts"],
+      "@treg/i18n/*": ["packages/i18n/src/*"],
+      "@treg/config/*": ["packages/config/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "build", ".turbo"]
+}

@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "listings": "Listings",
+    "users": "Users",
+    "regions": "Regions",
+    "features": "Features",
+    "audit": "Audit log",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "title": "Admin dashboard",
+    "totalUsers": "Total users",
+    "totalAgents": "Agents",
+    "publishedListings": "Published listings",
+    "pendingQueue": "Pending review",
+    "contacts24h": "Contacts in 24h",
+    "reviewNow": "Review now"
+  },
+  "listings": {
+    "title": "Listing moderation",
+    "filters": {
+      "status": "Status",
+      "region": "Region",
+      "type": "Type",
+      "search": "Search by title or owner"
+    },
+    "columns": {
+      "image": "Image",
+      "title": "Title",
+      "owner": "Owner",
+      "region": "Region",
+      "type": "Type",
+      "submittedAt": "Submitted",
+      "status": "Status"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "archive": "Archive",
+      "open": "Open"
+    },
+    "rejectDialog": {
+      "title": "Reject listing",
+      "reasonLabel": "Reason",
+      "reasons": {
+        "spam": "Spam",
+        "fake": "Fake listing",
+        "bad-photos": "Poor photo quality",
+        "wrong-region": "Wrong region",
+        "duplicate": "Duplicate",
+        "pricing-suspect": "Suspicious pricing",
+        "other": "Other"
+      },
+      "noteLabel": "Note for the owner (optional)",
+      "submit": "Reject and email"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "actions": {
+      "suspend": "Suspend",
+      "unsuspend": "Reinstate",
+      "promoteAgent": "Promote to agent",
+      "demote": "Demote to user"
+    }
+  },
+  "regions": {
+    "title": "Regions",
+    "addCity": "Add city",
+    "addNeighborhood": "Add neighborhood"
+  },
+  "audit": {
+    "title": "Audit log",
+    "actor": "Actor",
+    "action": "Action",
+    "target": "Target",
+    "createdAt": "Date"
+  }
+}

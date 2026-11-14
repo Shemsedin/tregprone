@@ -1,0 +1,111 @@
+{
+  "type": {
+    "SALE": "For sale",
+    "RENT": "For rent"
+  },
+  "propertyType": {
+    "APARTMENT": "Apartment",
+    "HOUSE": "House",
+    "VILLA": "Villa",
+    "STUDIO": "Studio",
+    "LAND": "Land",
+    "COMMERCIAL": "Commercial",
+    "OFFICE": "Office",
+    "GARAGE": "Garage",
+    "OTHER": "Other"
+  },
+  "status": {
+    "DRAFT": "Draft",
+    "PENDING_REVIEW": "Pending review",
+    "PUBLISHED": "Published",
+    "REJECTED": "Rejected",
+    "SOLD": "Sold",
+    "RENTED": "Rented",
+    "ARCHIVED": "Archived"
+  },
+  "rentPeriod": {
+    "MONTH": "/month",
+    "WEEK": "/week",
+    "DAY": "/day"
+  },
+  "summary": {
+    "bedrooms": "{count, plural, one {# bedroom} other {# bedrooms}}",
+    "bathrooms": "{count, plural, one {# bathroom} other {# bathrooms}}",
+    "area": "{m2} m²",
+    "floor": "Floor {floor} of {total}"
+  },
+  "detail": {
+    "overview": "Overview",
+    "description": "Description",
+    "features": "Features",
+    "location": "Location",
+    "owner": "Listed by",
+    "publishedOn": "Published on {date}",
+    "shareCta": "Share this property",
+    "saveCta": "Save to favorites",
+    "savedCta": "Saved",
+    "contactCta": "Contact owner",
+    "showPhone": "Show phone",
+    "askForPhone": "Phone is revealed after sending a message"
+  },
+  "contact": {
+    "title": "Send a message",
+    "subtitle": "The owner will receive your email. Don't share sensitive info.",
+    "name": "Name",
+    "email": "Your email",
+    "phone": "Phone (optional)",
+    "message": "Message",
+    "messagePlaceholder": "Hi, I'm interested in this property…",
+    "submit": "Send message",
+    "success": "Message sent. The owner will get in touch.",
+    "rateLimited": "You've sent too many messages. Try again later."
+  },
+  "features": {
+    "balcony": "Balcony",
+    "parking": "Parking",
+    "elevator": "Elevator",
+    "garden": "Garden",
+    "basement": "Basement",
+    "furnished": "Furnished",
+    "airConditioning": "Air conditioning",
+    "centralHeating": "Central heating",
+    "internet": "Internet",
+    "seaView": "Sea view",
+    "mountainView": "Mountain view",
+    "newConstruction": "New construction",
+    "petsAllowed": "Pets allowed",
+    "security": "Security",
+    "swimmingPool": "Swimming pool"
+  },
+  "wizard": {
+    "step1": "Basics",
+    "step2": "Location",
+    "step3": "Photos",
+    "step4": "Review",
+    "title": "Title",
+    "titlePlaceholder": "e.g. 2-bedroom apartment by Durrës beach",
+    "description": "Description",
+    "descriptionHint": "Describe the property, the area, and what makes it special.",
+    "price": "Price",
+    "currency": "Currency",
+    "rentPeriod": "Rent period",
+    "areaM2": "Area (m²)",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "floor": "Floor",
+    "floorsTotal": "Total floors",
+    "yearBuilt": "Year built",
+    "region": "City / Neighborhood",
+    "address": "Address",
+    "pinOnMap": "Drop the pin on the map",
+    "uploadPhotos": "Upload photos",
+    "photosHint": "At least 3 photos, max 30. The first photo is the cover.",
+    "reviewTitle": "Review and publish",
+    "submitForReview": "Submit for review",
+    "saveDraft": "Save draft"
+  },
+  "card": {
+    "newBadge": "New",
+    "featuredBadge": "Featured"
+  }
+}
