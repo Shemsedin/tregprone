@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       postgres:
-        image: postgis/postgis:16-3.4
+        image: postgres:16-alpine
         env:
           POSTGRES_USER: treg
           POSTGRES_PASSWORD: treg
@@ -45,14 +45,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: --health-cmd "redis-cli ping" --health-interval 10s --health-retries 5
     env:
       DATABASE_URL: postgresql://treg:treg@localhost:5432/tregtest
-      REDIS_URL: redis://localhost:6379
       JWT_ED_PRIVATE_KEY: ""
       JWT_ED_PUBLIC_KEY: ""
     steps:
@@ -102,14 +96,5 @@ jobs:
           file: scaffold/apps/web/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository }}/web:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build and push Worker
-        uses: docker/build-push-action@v5
-        with:
-          context: scaffold
-          file: scaffold/apps/worker/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/${{ github.repository }}/worker:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -6,6 +6,15 @@ interface MailOptions {
   subject: string;
   html: string;
   text?: string;
+  replyTo?: string;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function createMailTransport() {
@@ -31,6 +40,7 @@ export async function sendMail(opts: MailOptions) {
   await transport.sendMail({
     from: FROM,
     to: opts.to,
+    replyTo: opts.replyTo,
     subject: opts.subject,
     html: opts.html,
     text: opts.text ?? opts.subject,
@@ -69,14 +79,28 @@ export async function sendContactEmail(opts: {
   listingTitle: string;
   listingUrl: string;
 }) {
+  const name = escapeHtml(opts.senderName);
+  const email = escapeHtml(opts.senderEmail);
+  const phone = opts.senderPhone ? escapeHtml(opts.senderPhone) : null;
+  const title = escapeHtml(opts.listingTitle);
+
   await sendMail({
     to: opts.agentEmail,
-    subject: `Kërkesë kontakti për: ${opts.listingTitle}`,
-    html: `<p><strong>Emri:</strong> ${opts.senderName}</p>
-<p><strong>Email:</strong> ${opts.senderEmail}</p>
-${opts.senderPhone ? `<p><strong>Telefon:</strong> ${opts.senderPhone}</p>` : ''}
-<p><strong>Mesazhi:</strong></p>
-<p>${opts.message}</p>
-<p><a href="${opts.listingUrl}">Shiko listimin</a></p>`,
+    replyTo: opts.senderEmail,
+    subject: `Kërkesë kontakti: ${opts.listingTitle}`,
+    html: `
+<div style="font-family:sans-serif;max-width:560px;margin:0 auto">
+  <h2 style="color:#2e7d5b">Kërkesë e re kontakti</h2>
+  <p><strong>Pronë:</strong> <a href="${opts.listingUrl}">${title}</a></p>
+  <hr/>
+  <p><strong>Emri:</strong> ${name}</p>
+  <p><strong>Email:</strong> ${email}</p>
+  ${phone ? `<p><strong>Telefon:</strong> ${phone}</p>` : ''}
+  <p><strong>Mesazhi:</strong></p>
+  <p style="white-space:pre-line">${escapeHtml(opts.message)}</p>
+  <hr/>
+  <p style="font-size:12px;color:#888">Treg Prone — platforma e pronave shqiptare</p>
+</div>`,
+    text: `Kërkesë kontakti për: ${opts.listingTitle}\n\nEmri: ${opts.senderName}\nEmail: ${opts.senderEmail}${opts.senderPhone ? `\nTelefon: ${opts.senderPhone}` : ''}\n\nMesazhi:\n${opts.message}`,
   });
 }

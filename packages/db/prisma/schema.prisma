@@ -2,15 +2,13 @@
 // packages/db/prisma/schema.prisma
 
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../generated/client"
-  previewFeatures = ["postgresqlExtensions"]
+  provider = "prisma-client-js"
+  output   = "../generated/client"
 }
 
 datasource db {
-  provider   = "postgresql"
-  url        = env("DATABASE_URL")
-  extensions = [postgis]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ── Enums ────────────────────────────────────────────────────────────────────

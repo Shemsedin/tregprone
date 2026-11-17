@@ -10,7 +10,7 @@ help: ## Show this help
 install: ## Install dependencies
 	npm ci
 
-up: ## Start docker services (postgres, redis, meilisearch, mailhog, minio)
+up: ## Start docker services (postgres, mailhog, minio)
 	docker compose up -d
 
 down: ## Stop docker services
@@ -26,7 +26,7 @@ reset: down ## Reset docker volumes (destroys data!)
 	docker compose down -v
 	docker compose up -d
 
-dev: ## Run web + api + worker in parallel
+dev: ## Run web + api in parallel
 	npm run dev
 
 build: ## Build everything

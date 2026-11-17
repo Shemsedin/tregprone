@@ -16,17 +16,17 @@ tregprone ("Albanian Market") is a Zoopla/Rightmove-style platform for real esta
 
 - **Language**: TypeScript (strict mode, noUncheckedIndexedAccess)
 - **Frontend**: React Router v7 (framework mode, SSR), Vite, Tailwind CSS, shadcn/ui, Lucide icons, MapLibre GL JS, TanStack Query
-- **Backend**: Node.js 20+, Fastify 5, Prisma 5.21 (PostgreSQL 16 with PostGIS), Meilisearch, Redis (BullMQ queues), Pino logging
+- **Backend**: Node.js 20+, Fastify 5, Prisma 5.21 (PostgreSQL 16), sharp (image processing), nodemailer (SMTP), Pino logging
 - **Auth**: @fastify/jwt (EdDSA), argon2id hashing, arctic OAuth (Google)
 - **Storage**: S3-compatible object store (Cloudflare R2, Backblaze B2, MinIO, or AWS S3), presigned URLs
 - **Testing**: Vitest (unit), Playwright (e2e), supertest
 - **Tooling**: npm workspaces, ESLint (flat config), Prettier, Husky + lint-staged, Changesets
 - **Infra**: Docker Compose locally; a single VPS with Docker Compose for production
-- **Monorepo**: npm workspaces under `apps/` (web, api, worker) and `packages/` (db, types, ui, i18n, config)
+- **Monorepo**: npm workspaces under `apps/` (web, api) and `packages/` (db, types, ui, i18n, config)
 
 ### Key Features
 
-- **Geospatial**: PostGIS for property locations (WGS84 SRID 4326)
+- **Geospatial**: Property locations stored as WGS84 `lat`/`lng` floats (PostGIS can be added later if radius/polygon queries are needed)
 - **Money**: Integers in minor units (cents/qindarka) + currency codes (ALL/EUR/MKD/USD)
 - **i18n**: ICU MessageFormat with fallback chains (sq-AL → sq-XK/sq-MK → en)
 - **Security**: JWT access (15min) + refresh tokens, CSRF, rate-limiting, image sanitization
@@ -40,8 +40,7 @@ The repository is organized as follows (after copying `scaffold/` to a new repo)
 tregprone/
 ├── apps/
 │   ├── web/          # React Router v7 SSR app
-│   ├── api/          # Fastify HTTP API
-│   └── worker/       # BullMQ background jobs
+│   └── api/          # Fastify HTTP API (also sends email and processes images)
 ├── packages/
 │   ├── db/           # Prisma schema + client
 │   ├── types/        # Zod schemas + TS types
@@ -50,7 +49,7 @@ tregprone/
 │   └── config/       # Shared ESLint + Tailwind preset
 ├── infra/
 │   └── github/              # GitHub Actions workflows
-├── docker-compose.yml # Local dev stack (postgres, redis, meilisearch, mailhog, minio)
+├── docker-compose.yml # Local dev stack (postgres, mailhog, minio)
 ├── package.json      # Root with workspaces + scripts (dev, build, test, lint, db:*, i18n:*)
 ├── tsconfig.base.json
 └── .env.example      # Environment variables
@@ -79,7 +78,7 @@ Additional assets:
    ```bash
    git clone <your-repo-url> tregprone
    cd tregprone
-   cp .env.example .env.local
+   cp .env.example .env
    ```
 
 2. **Install dependencies**:
@@ -92,7 +91,7 @@ Additional assets:
 
    ```bash
    docker compose up -d
-   # Starts: postgres (postgis), redis, meilisearch (master key: dev-master-key), mailhog, minio
+   # Starts: postgres, mailhog, minio
    ```
 
 4. **Database setup**:
@@ -124,15 +123,14 @@ Additional assets:
    npm run test:e2e  # Playwright tests
    ```
 
+   > Shortcuts: the root `Makefile` wraps these commands (`make up`, `make dev`, `make lint`, `make test`, `make db-seed`, …). Run `make help` for the full list.
+
 ### Environment Variables
 
 Copy `.env.example` to `.env` — the defaults match `docker-compose.yml`, so nothing needs changing for local development. Only the variables below are read by the code; all have local defaults.
 
 ```bash
 DATABASE_URL="postgresql://treg:treg@localhost:5432/treg?schema=public"
-REDIS_URL="redis://localhost:6379"
-MEILI_URL="http://localhost:7700"
-MEILI_KEY="dev-master-key"
 
 # JWT (EdDSA). Leave empty locally: an ephemeral key pair is generated on each API start.
 JWT_PRIVATE_KEY_PEM=
@@ -193,14 +191,12 @@ Use Docker Compose for full-stack local development (see above).
 
 **Recommended:** a single small VPS (~€4–6/month) running Docker Compose — the cheapest and simplest option for this stack. See [Hosting Options](#hosting-options) for details and alternatives.
 
-Deploy using Docker images to any provider that supports containers. A full deployment needs **six runtime pieces**:
+Deploy using Docker images to any provider that supports containers. A full deployment needs **three containers/services plus two external accounts**:
 
 | Piece | Notes |
 | --- | --- |
-| `web`, `api`, `worker` | The three app images (Dockerfiles in `apps/*`) |
-| PostgreSQL 16 **with PostGIS** | The Prisma schema enables the `postgis` extension |
-| Redis | BullMQ queues + caching |
-| Meilisearch | Listing search |
+| `web`, `api` | The two app images (Dockerfiles in `apps/*`). The API also sends email and processes uploaded images in-process |
+| PostgreSQL 16 | Any standard Postgres (no extensions required) |
 | S3-compatible object store | Cloudflare R2, Backblaze B2, MinIO, or AWS S3 |
 | SMTP server | Any SMTP provider (the code speaks SMTP only) |
 
@@ -220,19 +216,15 @@ Deploy using Docker images to any provider that supports containers. A full depl
    IMAGE_TAG=$(git rev-parse --short HEAD)
    docker build -f apps/web/Dockerfile -t treg-web:$IMAGE_TAG .
    docker build -f apps/api/Dockerfile -t treg-api:$IMAGE_TAG .
-   docker build -f apps/worker/Dockerfile -t treg-worker:$IMAGE_TAG .
    ```
 
 2. **Set environment variables** on your hosting provider. Only the variables below are read by the code; see `.env.example` for the full list.
 
-   Required in production (`api` and `worker` unless noted):
+   Required in production (`api` unless noted):
 
    ```bash
    NODE_ENV=production
-   DATABASE_URL=postgres://...          # api, worker, migrations
-   REDIS_URL=redis://...
-   MEILI_URL=https://...
-   MEILI_KEY=...
+   DATABASE_URL=postgres://...          # api, migrations
    JWT_PRIVATE_KEY_PEM=...              # api only; EdDSA PKCS8 PEM (use \n for newlines)
    JWT_PUBLIC_KEY_PEM=...               # api only; EdDSA SPKI PEM
    COOKIE_SECRET=...                    # api only; long random string
@@ -250,7 +242,7 @@ Deploy using Docker images to any provider that supports containers. A full depl
    MAIL_FROM="Treg Prone <noreply@yourdomain>"
    ```
 
-   Optional: `BLOB_REGION` (default `auto`), `BLOB_PUBLIC_CONTAINER` / `BLOB_PRIVATE_CONTAINER` (default `images-public` / `images-private`), `API_PORT`, `API_LOG_LEVEL`, `WORKER_CONCURRENCY`, `ACCESS_TOKEN_TTL`, `REFRESH_TOKEN_TTL`.
+   Optional: `BLOB_REGION` (default `auto`), `BLOB_PUBLIC_CONTAINER` / `BLOB_PRIVATE_CONTAINER` (default `images-public` / `images-private`), `API_PORT`, `API_LOG_LEVEL`, `ACCESS_TOKEN_TTL`, `REFRESH_TOKEN_TTL`.
 
    Not needed yet: `OAUTH_GOOGLE_*` (Google login is not implemented in the API) and `RESEND_API_KEY` (use Resend's SMTP credentials via `SMTP_*` instead).
 
@@ -274,17 +266,17 @@ Deploy using Docker images to any provider that supports containers. A full depl
 
 ### Hosting Options
 
-Because the stack needs six pieces (see above), managed platforms add up quickly. A single VPS is the cheapest and simplest option. Prices are approximate (checked late 2026) — verify before committing. E.g Hetzner
+Because the stack still needs several services (app containers, Postgres, object storage, SMTP), managed platforms add up quickly. A single VPS is the cheapest and simplest option. Prices are approximate (checked late 2026) — verify before committing. E.g Hetzner
 
 #### Recommended: single small VPS + Docker Compose (cheapest, one bill)
 
-- **Pros**: One flat price (~€4–6/month, e.g. Hetzner Cloud with 4 GB RAM) runs everything: web, api, worker, Postgres+PostGIS, Redis, Meilisearch. Reuses the services already defined in `docker-compose.yml` (`postgis/postgis`, `redis`, `meilisearch`). No per-service or per-GB billing surprises.
+- **Pros**: One flat price (~€4–6/month, e.g. Hetzner Cloud with 4 GB RAM) runs everything: web, api and Postgres. Reuses the Postgres service already defined in `docker-compose.yml` (`postgres:16-alpine`). No per-service or per-GB billing surprises.
 - **Cons**: You manage the server (updates, backups).
 - **Setup**:
   1. Create a VPS with Docker installed and point your domain's DNS at it.
-  2. Build the images (step 1 above) or build on the server, and add `web`, `api`, `worker` to a compose file alongside the infra services (do not publish Postgres/Redis/Meilisearch ports publicly).
+  2. Build the images (step 1 above) or build on the server, and add `web` and `api` to a compose file alongside Postgres (do not publish the Postgres port publicly).
   3. Put Caddy (automatic HTTPS) in front of `web` (port 3000) and `api` (port 4000).
-  4. Set the environment variables above, with `DATABASE_URL`, `REDIS_URL` and `MEILI_URL` pointing at the compose service names.
+  4. Set the environment variables above, with `DATABASE_URL` pointing at the Postgres compose service name.
   5. Run migrations, then `docker compose up -d`.
   6. Schedule `pg_dump` backups to your object store.
   - Storage: Cloudflare R2 (free up to 10 GB) — or MinIO on the same box.
@@ -304,7 +296,7 @@ To keep costs near zero while staying simple, start with the single VPS.
 
 1. **Seed real data**: Add realistic property listings via the API or by extending `packages/db/prisma/seed.ts` with more varied data (images, prices, locations across AL/XK/MK).
 2. **Image uploads**: Wire up the presigned URL flow so agents can upload property photos to MinIO/R2.
-3. **Search (Meilisearch)**: Confirm the worker is indexing listings and the search page returns filtered results end-to-end.
+3. **Search**: Confirm the search page returns filtered results end-to-end (Postgres-backed; add `pg_trgm` for free-text search if needed).
 4. **Auth flows**: Test the full register → login → JWT refresh cycle; verify Google OAuth works.
 5. **Map integration**: Add MapLibre GL JS to the listing detail map tab and the search results page.
 6. **Admin panel**: Test the moderation queue (approve/reject listings, user management).
