@@ -21,7 +21,7 @@ tregprone ("Albanian Market") is a Zoopla/Rightmove-style platform for real esta
 - **Storage**: S3-compatible object store (Cloudflare R2, Backblaze B2, MinIO, or AWS S3), presigned URLs
 - **Testing**: Vitest (unit), Playwright (e2e), supertest
 - **Tooling**: npm workspaces, ESLint (flat config), Prettier, Husky + lint-staged, Changesets
-- **Infra**: Docker Compose locally; Railway / Render / Fly.io / VPS for production
+- **Infra**: Docker Compose locally; a single VPS with Docker Compose for production
 - **Monorepo**: npm workspaces under `apps/` (web, api, worker) and `packages/` (db, types, ui, i18n, config)
 
 ### Key Features
@@ -124,39 +124,36 @@ Additional assets:
    npm run test:e2e  # Playwright tests
    ```
 
-### Environment Variables (.env.local)
+### Environment Variables
+
+Copy `.env.example` to `.env` — the defaults match `docker-compose.yml`, so nothing needs changing for local development. Only the variables below are read by the code; all have local defaults.
 
 ```bash
-# Database
-DATABASE_URL="postgresql://tregadmin:password@localhost:5432/treg"
-
-# Redis
+DATABASE_URL="postgresql://treg:treg@localhost:5432/treg?schema=public"
 REDIS_URL="redis://localhost:6379"
-
-# Meilisearch
 MEILI_URL="http://localhost:7700"
 MEILI_KEY="dev-master-key"
 
-# Auth
-JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"
-JWT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+# JWT (EdDSA). Leave empty locally: an ephemeral key pair is generated on each API start.
+JWT_PRIVATE_KEY_PEM=
+JWT_PUBLIC_KEY_PEM=
 
-# OAuth (Google)
-OAUTH_GOOGLE_CLIENT_ID="..."
-OAUTH_GOOGLE_CLIENT_SECRET="..."
+# Storage (S3-compatible; MinIO locally)
+BLOB_ENDPOINT="http://localhost:9000"
+BLOB_ACCESS_KEY="minioadmin"
+BLOB_SECRET_KEY="minioadmin"
+BLOB_PUBLIC_BASE_URL="http://localhost:9000/images-public"
 
-# Storage (MinIO for local dev)
-BLOB_ACCOUNT="devstoreaccount1"
-BLOB_ACCOUNT_KEY="Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
-BLOB_PUBLIC_BASE_URL="http://localhost:10000/devstoreaccount1/images-public"
+# Email (MailHog locally)
+SMTP_HOST="localhost"
+SMTP_PORT="1025"
 
-# Email (Mailhog)
-MAIL_SMTP_HOST="localhost"
-MAIL_SMTP_PORT="1025"
-
-# CORS
-CORS_ORIGINS="http://localhost:5173"
+PUBLIC_APP_URL="http://localhost:3000"
+PUBLIC_API_URL="http://localhost:4000"
+CORS_ORIGINS="http://localhost:3000"
 ```
+
+> Google OAuth (`OAUTH_GOOGLE_*`) and `RESEND_API_KEY` appear in `.env.example` but are not used by the code yet.
 
 ### i18n Catalogs
 
@@ -194,40 +191,74 @@ Use Docker Compose for full-stack local development (see above).
 
 ### Production Hosting
 
-Deploy using Docker images to any provider that supports containers. Recommended options: Railway, Render, Fly.io, DigitalOcean App Platform, or a VPS with Docker Compose.
+**Recommended:** a single small VPS (~€4–6/month) running Docker Compose — the cheapest and simplest option for this stack. See [Hosting Options](#hosting-options) for details and alternatives.
+
+Deploy using Docker images to any provider that supports containers. A full deployment needs **six runtime pieces**:
+
+| Piece | Notes |
+| --- | --- |
+| `web`, `api`, `worker` | The three app images (Dockerfiles in `apps/*`) |
+| PostgreSQL 16 **with PostGIS** | The Prisma schema enables the `postgis` extension |
+| Redis | BullMQ queues + caching |
+| Meilisearch | Listing search |
+| S3-compatible object store | Cloudflare R2, Backblaze B2, MinIO, or AWS S3 |
+| SMTP server | Any SMTP provider (the code speaks SMTP only) |
 
 #### Prerequisites
 
 - Docker (for building images)
 - Account with your chosen hosting provider
-- S3-compatible object store (Cloudflare R2, Backblaze B2, MinIO, or AWS S3)
+- S3-compatible object store with a public bucket (`images-public`) and a private bucket (`images-private`)
+- SMTP credentials (e.g. Resend, Brevo, or Mailgun)
 - Custom domains (optional)
 
 #### Steps
 
-1. **Build images**:
+1. **Build images** (the Dockerfiles expect the repository root as build context):
 
    ```bash
    IMAGE_TAG=$(git rev-parse --short HEAD)
-   docker build -t treg-web:$IMAGE_TAG ./apps/web
-   docker build -t treg-api:$IMAGE_TAG ./apps/api
-   docker build -t treg-worker:$IMAGE_TAG ./apps/worker
+   docker build -f apps/web/Dockerfile -t treg-web:$IMAGE_TAG .
+   docker build -f apps/api/Dockerfile -t treg-api:$IMAGE_TAG .
+   docker build -f apps/worker/Dockerfile -t treg-worker:$IMAGE_TAG .
    ```
 
-2. **Set environment variables** on your hosting provider:
+2. **Set environment variables** on your hosting provider. Only the variables below are read by the code; see `.env.example` for the full list.
+
+   Required in production (`api` and `worker` unless noted):
 
    ```bash
-   DATABASE_URL=postgres://...
+   NODE_ENV=production
+   DATABASE_URL=postgres://...          # api, worker, migrations
    REDIS_URL=redis://...
    MEILI_URL=https://...
    MEILI_KEY=...
-   JWT_PRIVATE_KEY_PEM=...
-   JWT_PUBLIC_KEY_PEM=...
-   OAUTH_GOOGLE_CLIENT_ID=...
-   OAUTH_GOOGLE_CLIENT_SECRET=...
-   S3_ENDPOINT=...
-   S3_ACCESS_KEY=...
-   S3_SECRET_KEY=...
+   JWT_PRIVATE_KEY_PEM=...              # api only; EdDSA PKCS8 PEM (use \n for newlines)
+   JWT_PUBLIC_KEY_PEM=...               # api only; EdDSA SPKI PEM
+   COOKIE_SECRET=...                    # api only; long random string
+   PUBLIC_APP_URL=https://yourdomain    # api
+   PUBLIC_API_URL=https://api.yourdomain # web
+   CORS_ORIGINS=https://yourdomain      # api, comma-separated
+   BLOB_ENDPOINT=https://...            # S3 endpoint
+   BLOB_ACCESS_KEY=...
+   BLOB_SECRET_KEY=...
+   BLOB_PUBLIC_BASE_URL=https://...     # public URL of the images-public bucket
+   SMTP_HOST=...
+   SMTP_PORT=587
+   SMTP_USER=...
+   SMTP_PASS=...
+   MAIL_FROM="Treg Prone <noreply@yourdomain>"
+   ```
+
+   Optional: `BLOB_REGION` (default `auto`), `BLOB_PUBLIC_CONTAINER` / `BLOB_PRIVATE_CONTAINER` (default `images-public` / `images-private`), `API_PORT`, `API_LOG_LEVEL`, `WORKER_CONCURRENCY`, `ACCESS_TOKEN_TTL`, `REFRESH_TOKEN_TTL`.
+
+   Not needed yet: `OAUTH_GOOGLE_*` (Google login is not implemented in the API) and `RESEND_API_KEY` (use Resend's SMTP credentials via `SMTP_*` instead).
+
+   Without `JWT_*_PEM` the API generates a new key pair on every start, which invalidates all sessions on restart and breaks multi-instance setups. Generate a key pair with:
+
+   ```bash
+   openssl genpkey -algorithm ed25519 -out jwt-private.pem
+   openssl pkey -in jwt-private.pem -pubout -out jwt-public.pem
    ```
 
 3. **Run migrations**:
@@ -241,70 +272,33 @@ Deploy using Docker images to any provider that supports containers. Recommended
    - Metrics: OpenTelemetry → OTLP backend of your choice
    - Alerts: set up via your monitoring provider
 
-### Alternative Hosting Options
+### Hosting Options
 
-If you are on a budget or prefer simpler managed hosting, here are lower-cost or free-tier alternatives. These support Node.js, PostgreSQL, Redis, and object storage. Costs are approximate for light usage (1-10 users); scale up as needed. Adapt the `docker-compose.yml` for local parity.
+Because the stack needs six pieces (see above), managed platforms add up quickly. A single VPS is the cheapest and simplest option. Prices are approximate (checked late 2026) — verify before committing. E.g Hetzner
 
-#### 1. Railway (Recommended for Simplicity)
+#### Recommended: single small VPS + Docker Compose (cheapest, one bill)
 
-- **Pros**: Managed full-stack (Node.js + Postgres + Redis), easy deploys from Git, free tier for small apps.
-- **Cons**: Limited customization; vendor lock-in.
-- **Costs**: Free tier (~$0/month for hobby use), then $5-10/month per service.
+- **Pros**: One flat price (~€4–6/month, e.g. Hetzner Cloud with 4 GB RAM) runs everything: web, api, worker, Postgres+PostGIS, Redis, Meilisearch. Reuses the services already defined in `docker-compose.yml` (`postgis/postgis`, `redis`, `meilisearch`). No per-service or per-GB billing surprises.
+- **Cons**: You manage the server (updates, backups).
 - **Setup**:
-  1. Sign up at railway.app.
-  2. Connect Git repo; Railway auto-detects Node.js.
-  3. Add Postgres and Redis services.
-  4. Set env vars (DATABASE_URL, REDIS_URL, etc.).
-  5. Deploy: `railway up`.
-  - Storage: Use Railway's built-in or integrate Cloudflare R2 (~$0.015/GB).
-
-#### 2. Render
-
-- **Pros**: Free tier for web services, managed Postgres/Redis, Docker support, good for SSR.
-- **Cons**: Free tier sleeps after inactivity; limited bandwidth.
-- **Costs**: Free tier (~$0/month), paid plans $7-25/month per service.
-- **Setup**:
-  1. Sign up at render.com.
-  2. Create web service from Git (Dockerfile or Node.js).
-  3. Add managed Postgres and Redis.
-  4. Configure env vars and build settings.
-  5. Deploy automatically on push.
-  - Storage: Integrate with Cloudflare R2 or Backblaze B2.
-
-#### 3. DigitalOcean App Platform
-
-- **Pros**: Docker-based, scales easily, affordable VPS alternative.
-- **Cons**: Less managed than Railway/Render; steeper learning curve.
-- **Costs**: $5/month for basic app, $7/month for Postgres, $6/month for Redis.
-- **Setup**:
-  1. Sign up at digitalocean.com.
-  2. Create App Platform app from Git (use Dockerfile).
-  3. Add managed databases (Postgres, Redis).
-  4. Set env vars and resource limits.
-  5. Deploy via Git push.
-  - Storage: Spaces (S3-compatible, $1/month for 250GB).
-
-#### 4. Vercel + Neon + Upstash (Serverless-ish)
-
-- **Pros**: Vercel for frontend (free), Neon for Postgres (free tier), Upstash for Redis (generous free tier).
-- **Cons**: Backend may need serverless functions; not full SSR without hacks.
-- **Costs**: Mostly free ($0-10/month total).
-- **Setup**:
-  1. Vercel (vercel.com) for web app (React Router SSR).
-  2. Neon (neon.tech) for Postgres (free 512MB).
-  3. Upstash (upstash.com) for Redis (free 10k requests/day).
-  4. For API/worker: Use Vercel functions or migrate to Railway/Render.
-  - Storage: Vercel Blob or Cloudflare R2.
+  1. Create a VPS with Docker installed and point your domain's DNS at it.
+  2. Build the images (step 1 above) or build on the server, and add `web`, `api`, `worker` to a compose file alongside the infra services (do not publish Postgres/Redis/Meilisearch ports publicly).
+  3. Put Caddy (automatic HTTPS) in front of `web` (port 3000) and `api` (port 4000).
+  4. Set the environment variables above, with `DATABASE_URL`, `REDIS_URL` and `MEILI_URL` pointing at the compose service names.
+  5. Run migrations, then `docker compose up -d`.
+  6. Schedule `pg_dump` backups to your object store.
+  - Storage: Cloudflare R2 (free up to 10 GB) — or MinIO on the same box.
+  - Email: Resend/Brevo free tier via SMTP.
+- **$0 variant**: Oracle Cloud "Always Free" ARM VM (up to 4 vCPU / 24 GB). Free, but signup can be fussy and capacity is not guaranteed. Build images for `linux/arm64`.
 
 #### General Tips
 
-- **Storage**: Use Cloudflare R2 (free tier: 10GB) or Backblaze B2 (~$5/month) for images.
-- **Email**: Keep Resend or switch to SendGrid free tier.
+- **Storage**: Cloudflare R2 (free tier: 10GB) or Backblaze B2 (~$5/month) for images.
+- **Email**: Use any SMTP provider's free tier (Resend, Brevo). The code uses SMTP only.
 - **Monitoring**: Use free tiers of Sentry or LogRocket.
-- **Costs Comparison**: Self-hosted VPS ~$10-30/month; managed platforms ~$20-80/month for MVP.
 - **Migration**: The stack is provider-agnostic; switch hosting by updating env vars.
 
-Start with Railway or Render for the easiest full-stack experience.
+To keep costs near zero while staying simple, start with the single VPS.
 
 ## Next Steps
 
