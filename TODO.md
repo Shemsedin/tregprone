@@ -61,6 +61,12 @@ To list things to do and where last left
 - [ ] **Auth UI** — apply shared `Header` to auth routes (`login`, `register`, `forgot`, `reset`) for visual consistency; currently these have no shared nav
 - [ ] **Legal pages** — add `Footer` to privacy and terms pages
 
+### Listing Quality Controls (Gumtree-style free listings)
+
+- [ ] **Prevent duplicate spam** — block the same property being uploaded by multiple agents (e.g. Tirana, Prishtina, Ulcinj): require exact street/building matching or manual approval for new accounts
+- [ ] **Keep photo quality high** — enforce a minimum photo resolution and require at least 5 clear photos before a free listing goes live
+- [ ] **Auto-expire old listings** — free listings expire automatically after 30 days unless the user clicks a free "renew" button
+
 ### Admin Panel
 
 - [ ] Test moderation queue: approve/reject listings, manage users
