@@ -137,10 +137,10 @@ JWT_PRIVATE_KEY_PEM=
 JWT_PUBLIC_KEY_PEM=
 
 # Storage (S3-compatible; MinIO locally)
-BLOB_ENDPOINT="http://localhost:9000"
+BLOB_ENDPOINT="http://localhost:9002"
 BLOB_ACCESS_KEY="minioadmin"
 BLOB_SECRET_KEY="minioadmin"
-BLOB_PUBLIC_BASE_URL="http://localhost:9000/images-public"
+BLOB_PUBLIC_BASE_URL="http://localhost:9002/images-public"
 
 # Email (MailHog locally)
 SMTP_HOST="localhost"
@@ -191,7 +191,7 @@ Use Docker Compose for full-stack local development (see above).
 
 **Recommended:** a single small VPS (~€4–6/month) running Docker Compose — the cheapest and simplest option for this stack. See [Hosting Options](#hosting-options) for details and alternatives.
 
-Deploy using Docker images to any provider that supports containers. A full deployment needs **three containers/services plus two external accounts**:
+Deploy using Docker images to any provider that supports containers. A full deployment needs **three containers/services plus external accounts** (see [Accounts to Create](#accounts-to-create)):
 
 | Piece | Notes |
 | --- | --- |
@@ -207,6 +207,22 @@ Deploy using Docker images to any provider that supports containers. A full depl
 - S3-compatible object store with a public bucket (`images-public`) and a private bucket (`images-private`)
 - SMTP credentials (e.g. Resend, Brevo, or Mailgun)
 - Custom domains (optional)
+
+#### Accounts to Create
+
+| # | Account | Needed for | Required? | Cost |
+| --- | --- | --- | --- | --- |
+| 1 | **Hosting provider** (e.g. Hetzner Cloud, or Oracle Cloud for the $0 variant) | VPS that runs `web`, `api` and Postgres | Yes | ~€4–6/month |
+| 2 | **Object storage**: Cloudflare R2 (card required, free up to 10 GB) or Backblaze B2 | Listing images and `pg_dump` backups. Skip if you run MinIO on the VPS | Yes, unless using MinIO | Free tier / ~$5/month |
+| 3 | **SMTP provider** (Resend, Brevo or Mailgun) | Verification and password-reset emails (`SMTP_*`) | Yes | Free tier |
+| 4 | **Domain registrar** (Namecheap, Cloudflare Registrar, etc.) | Public domain pointing at the VPS (Caddy handles HTTPS automatically) | Recommended | ~€10/year |
+| 5 | **GitHub** | Repository and CI/CD (`infra/github/workflows`) | Already have | Free |
+| 6 | **MapTiler** (or another vector tile provider) | Map tiles via `PUBLIC_MAP_STYLE_URL`, once map integration is added | Later | Free tier |
+| 7 | **Google Cloud Console** (OAuth client) | "Sign in with Google" (`OAUTH_GOOGLE_*`), once implemented | Later | Free |
+| 8 | **Sentry** or an OTLP backend such as Grafana Cloud | Error tracking and metrics | Optional | Free tier |
+| 9 | **Plausible** | Privacy-friendly analytics (`PUBLIC_PLAUSIBLE_DOMAIN`) | Optional | Paid, or self-host |
+
+To launch with the minimum, create accounts **1, 3 and 4**, plus **2** if you don't want to self-host storage with MinIO.
 
 #### Steps
 
