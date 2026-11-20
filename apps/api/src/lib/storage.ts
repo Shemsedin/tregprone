@@ -8,7 +8,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 let s3Client: S3Client | null = null;
 
-function getS3(): S3Client {
+export function getS3(): S3Client {
   if (!s3Client) {
     s3Client = new S3Client({
       endpoint: process.env['BLOB_ENDPOINT'],
@@ -59,4 +59,4 @@ export async function deletePublicObject(key: string) {
   await getS3().send(new DeleteObjectCommand({ Bucket: PUBLIC_BUCKET, Key: key }));
 }
 
-export { PRIVATE_BUCKET, PUBLIC_BUCKET };
+export { PRIVATE_BUCKET, PUBLIC_BUCKET, PUBLIC_BASE_URL };

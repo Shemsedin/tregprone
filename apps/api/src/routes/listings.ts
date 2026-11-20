@@ -8,12 +8,11 @@ import {
 } from '@treg/types';
 
 import prisma from '../lib/prisma.js';
-import { getMeili, LISTINGS_INDEX } from '../lib/meili.js';
 import { requireAuth, requireAgent } from '../plugins/auth.js';
 import { generateUploadUrl } from '../lib/storage.js';
-import { getRedis } from '../lib/redis.js';
+import { enqueueImageProcessing } from '../lib/images.js';
+import { sendContactEmail } from '../lib/mail.js';
 import { getRegionAndDescendantIds } from '../lib/region-tree.js';
-import { Queue } from 'bullmq';
 
 function slugify(text: string, id: string): string {
   return (
@@ -96,10 +95,6 @@ function formatListing(listing: {
 }
 
 export async function listingsRoutes(server: FastifyInstance) {
-  const redis = getRedis();
-  const searchQueue = new Queue('search-index', { connection: redis });
-  const mailQueue = new Queue('mail', { connection: redis });
-
   // GET /v1/listings
   server.get('/', async (request, reply) => {
     const filters = ListingFiltersSchema.parse(request.query);
@@ -404,8 +399,7 @@ export async function listingsRoutes(server: FastifyInstance) {
         },
       });
 
-      // Queue image processing
-      await searchQueue.add('process-image', { listingId: id, imageId: image.id, key: body.key });
+      enqueueImageProcessing({ listingId: id, imageId: image.id, key: body.key }, request.log);
 
       return reply.status(201).send({ id: image.id });
     },
@@ -437,9 +431,7 @@ export async function listingsRoutes(server: FastifyInstance) {
       },
     });
 
-    // Queue email
-    await mailQueue.add('contact', {
-      contactRequestId: contactReq.id,
+    void sendContactEmail({
       agentEmail: listing.owner.email,
       senderName: body.name,
       senderEmail: body.email,
@@ -447,6 +439,8 @@ export async function listingsRoutes(server: FastifyInstance) {
       message: body.message,
       listingTitle: listing.title,
       listingUrl: `${process.env['PUBLIC_APP_URL'] ?? 'http://localhost:3000'}/sq/listings/${listing.slug}`,
+    }).catch((err: unknown) => {
+      request.log.error({ err, contactRequestId: contactReq.id }, 'Contact email failed');
     });
 
     return reply.status(202).send({ message: 'Contact request received.' });

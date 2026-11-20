@@ -1,6 +1,6 @@
 # Treg Prone — Local Development
 
-tregprone is a Zoopla/Rightmove-style property listing and search platform for Albania, Kosovo, North Macedonia, and the Albanian diaspora. The app is running — API, web, worker, and all backing services are wired up and populated with seed data.
+tregprone is a Zoopla/Rightmove-style property listing and search platform for Albania, Kosovo, North Macedonia, and the Albanian diaspora. The app is running — API, web, and all backing services are wired up and populated with seed data.
 
 ## Quick Start (Development)
 
@@ -13,7 +13,7 @@ npm ci
 # 2. Copy and edit environment variables (first time only)
 cp .env.example .env
 
-# 3. Start backing services (Postgres/PostGIS, Redis, Meilisearch, MinIO, MailHog)
+# 3. Start backing services (Postgres, MinIO, MailHog)
 docker compose up -d
 docker compose ps
 
@@ -25,7 +25,6 @@ npx tsx packages/db/prisma/seed.ts
 # 5. Run apps (separate terminals)
 npm --workspace=@treg/api run dev   # http://localhost:4000
 npm --workspace=apps/web run dev    # http://localhost:5173
-npm --workspace=apps/worker run dev # optional
 ```
 
 **URLs:**
@@ -42,8 +41,7 @@ npm --workspace=apps/worker run dev # optional
 tregprone/
 ├── apps/
 │   ├── web/          # React Router v7 SSR (Vite + Tailwind)
-│   ├── api/          # Fastify 5 REST API
-│   └── worker/       # BullMQ background jobs
+│   └── api/          # Fastify 5 REST API (also sends email and processes images)
 ├── packages/
 │   ├── db/           # Prisma schema + client (@treg/db)
 │   ├── types/        # Shared Zod schemas + TS types (@treg/types)
@@ -94,6 +92,22 @@ npm run i18n:lint       # check translation parity
 npm run i18n:extract    # extract new i18n keys
 npm run db:generate     # regenerate Prisma client
 ```
+
+## Makefile Shortcuts
+
+`make help` lists every target. Each one wraps an npm script or `docker compose` command:
+
+| Target | What it does |
+| --- | --- |
+| `make up` / `down` / `ps` / `logs` | Start, stop, list, and tail the Docker services |
+| `make reset` | Remove Docker volumes and restart (**destroys local data**) |
+| `make install` | `npm ci` |
+| `make dev` | Run web + api in parallel |
+| `make build` / `test` / `lint` / `typecheck` | Run the matching npm script across all workspaces |
+| `make db-migrate` / `db-deploy` | Prisma migrate (dev / CI-prod). Needs migration files, which the repo does not have yet — use `prisma db push` (see Quick Start) |
+| `make db-seed` / `db-reset` / `db-studio` | Seed, drop + migrate + seed, or open Prisma Studio |
+| `make i18n-lint` | Check translation key parity |
+| `make clean` | Remove build output and `node_modules` |
 
 ## Notes
 

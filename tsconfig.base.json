@@ -22,7 +22,6 @@
     "paths": {
       "@treg/web/*": ["apps/web/app/*"],
       "@treg/api/*": ["apps/api/src/*"],
-      "@treg/worker/*": ["apps/worker/src/*"],
       "@treg/db": ["packages/db/src/index.ts"],
       "@treg/db/*": ["packages/db/src/*"],
       "@treg/types": ["packages/types/src/index.ts"],

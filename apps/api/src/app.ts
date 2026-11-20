@@ -13,7 +13,6 @@ import {
   jsonSchemaTransform,
 } from 'fastify-type-provider-zod';
 
-import { getRedis } from './lib/redis.js';
 import { healthRoutes } from './routes/health.js';
 import { authRoutes } from './routes/auth.js';
 import { listingsRoutes } from './routes/listings.js';
@@ -46,14 +45,11 @@ export async function buildApp(server: FastifyInstance) {
     crossOriginEmbedderPolicy: false,
   });
 
-  // Rate limiting (Redis-backed in production)
-  const redis = getRedis();
+  // Rate limiting (in-memory; per API instance)
   await server.register(rateLimit, {
     global: true,
     max: 60,
     timeWindow: '1 minute',
-    redis,
-    skipOnError: true,
   });
 
   // Health / back-pressure monitoring
