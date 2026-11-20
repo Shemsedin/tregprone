@@ -25,7 +25,7 @@ export function getS3(): S3Client {
 
 const PRIVATE_BUCKET = process.env['BLOB_PRIVATE_CONTAINER'] ?? 'images-private';
 const PUBLIC_BUCKET = process.env['BLOB_PUBLIC_CONTAINER'] ?? 'images-public';
-const PUBLIC_BASE_URL = process.env['BLOB_PUBLIC_BASE_URL'] ?? 'http://localhost:9000/images-public';
+const PUBLIC_BASE_URL = process.env['BLOB_PUBLIC_BASE_URL'] ?? 'http://localhost:9002/images-public';
 
 /** Generate a presigned PUT URL for the client to upload directly */
 export async function generateUploadUrl(key: string, contentType: string) {

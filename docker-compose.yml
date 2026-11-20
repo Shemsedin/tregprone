@@ -28,7 +28,8 @@ services:
       - "8025:8025"  # Web UI
 
   minio:
-    image: minio/minio:latest
+    # Upstream stopped publishing minio/minio images; pgsty/minio is a community build of upstream MinIO.
+    image: pgsty/minio:latest
     container_name: treg-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
@@ -36,7 +37,7 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
-      - "9000:9000"  # S3 API
+      - "9002:9000"  # S3 API (host 9002; 9000 is often taken, e.g. by Zscaler)
       - "9001:9001"  # Web console
     volumes:
       - miniodata:/data
